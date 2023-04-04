@@ -110,7 +110,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)/DBEngine/lib/</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glew32.lib;glew32s.lib;SDL2.lib;SDL2main.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glew32.lib;glew32s.lib;SDL2.lib;SDL2main.lib;opengl32.lib;assimp-vc143-mtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>copy "$(SolutionDir)DBEngine\lib\*.dll" "$(SolutionDir)$(Platform)\$(Configuration)"</Command>
@@ -137,9 +137,12 @@
     <ClInclude Include="includes\DBEngine\Game.h" />
     <ClInclude Include="includes\DBEngine\Graphics\Camera.h" />
     <ClInclude Include="includes\DBEngine\Graphics\GraphicsEngine.h" />
+    <ClInclude Include="includes\DBEngine\Graphics\Material.h" />
     <ClInclude Include="includes\DBEngine\Graphics\Mesh.h" />
+    <ClInclude Include="includes\DBEngine\Graphics\Model.h" />
     <ClInclude Include="includes\DBEngine\Graphics\ShaderProgram.h" />
     <ClInclude Include="includes\DBEngine\Graphics\Texture.h" />
+    <ClInclude Include="includes\DBEngine\Graphics\Vertex.h" />
     <ClInclude Include="includes\DBEngine\Graphics\VertexArrayObject.h" />
     <ClInclude Include="includes\DBEngine\Input.h" />
     <ClInclude Include="includes\DBEngine\Math\Transformations.h" />
@@ -150,7 +153,9 @@
     <ClCompile Include="source\DBEngine\Game.cpp" />
     <ClCompile Include="source\DBEngine\Graphics\Camera.cpp" />
     <ClCompile Include="source\DBEngine\Graphics\GraphicsEngine.cpp" />
+    <ClCompile Include="source\DBEngine\Graphics\Material.cpp" />
     <ClCompile Include="source\DBEngine\Graphics\Mesh.cpp" />
+    <ClCompile Include="source\DBEngine\Graphics\Model.cpp" />
     <ClCompile Include="source\DBEngine\Graphics\ShaderProgram.cpp" />
     <ClCompile Include="source\DBEngine\Graphics\Texture.cpp" />
     <ClCompile Include="source\DBEngine\Graphics\VertexArrayObject.cpp" />

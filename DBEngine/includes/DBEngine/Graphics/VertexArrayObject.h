@@ -1,5 +1,6 @@
 #pragma once
 #include "DBEngine/CoreMinimal.h"
+#include "DBEngine/Graphics/Vertex.h"
 
 const PositionMatrix TrianglePositions{
 	// x	// y	// z		//Colour		// tex coords
@@ -94,7 +95,11 @@ const IndicesMatrix CubeIndicies{
 
 class VertexArrayObject {
 public:
+	// create our simple mesh VAO
 	VertexArrayObject(GeometricShapes ChosenShape);
+	// create a complex mesh VAO from the importer
+	VertexArrayObject(vector<Vertex> Vertices, vector<unInt> Indices);
+
 	~VertexArrayObject();
 
 	void Draw();
@@ -107,4 +112,8 @@ private:
 	// VAB - ID for the Vertices
 	// EAB - ID for the Indices
 	unInt ID, VAB, EAB;
+
+	// for importing complex meshes
+	vector<Vertex> Vertices;
+	vector<unInt> Indices;
 };

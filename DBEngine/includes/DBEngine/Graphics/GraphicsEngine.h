@@ -23,8 +23,8 @@ public:
 	// return the sdl window
 	SDL_Window* GetWindow() const;
 
-	// this is going to add a new VAO to the VAOStack using a shape define
-	MeshPtr CreateSimpleMeshShape(GeometricShapes Shape, ShaderPtr MeshShader, TexturePtrStack MeshTextures);
+	// create a new mesh with a material assigned
+	ModelPtr CreateSimpleModelShape(GeometricShapes Shape, ShaderPtr MeshShader);
 
 	// add a new shader
 	// @param 1 - Vertex Shader
@@ -53,11 +53,17 @@ private:
 	ShaderPtr Shader;
 	// store a vector of textures
 	TexturePtrStack TextureStack;
-	// store all meshes in the game
-	MeshPtrStack MeshStack;
+	// store all models in the game
+	ModelPtrStack ModelStack;
 
 public:
 
 	// default camera
 	CameraPtr EngineDefaultCam;
+
+	// default texture
+	TexturePtr DefaultEngineTexture;
+
+	// default material
+	MaterialPtr DefaultEngineMaterial;
 };

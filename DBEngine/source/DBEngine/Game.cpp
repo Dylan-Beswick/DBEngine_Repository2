@@ -1,8 +1,9 @@
 #include "DBEngine/Game.h"
 #include "DBEngine/Graphics/GraphicsEngine.h"
-#include "DBEngine/Graphics/Mesh.h"
+#include "DBEngine/Graphics/Model.h"
 #include "DBEngine/Input.h"
 #include "DBEngine/Graphics/Camera.h"
+#include "DBEngine/Graphics/Material.h"
 
 Game& Game::GetGameInstance()
 {
@@ -26,6 +27,16 @@ void Game::Start(const char* WTitle, bool bFullscreen, int WWidth, int WHeight)
 	}
 
 	Run();
+}
+
+TexturePtr Game::GetDefaultEngineTexture()
+{
+	return Graphics->DefaultEngineTexture;
+}
+
+MaterialPtr Game::GetDefaultEngineMaterial()
+{
+	return Graphics->DefaultEngineMaterial;
 }
 
 Game::Game()
@@ -60,12 +71,23 @@ void Game::Run()
 		TexturePtr TConcrete = Graphics->CreateTexture("Game/Textures/ConcreteFloor.jpg");
 		TexturePtr TGrid = Graphics->CreateTexture("Game/Textures/ColourGrid.jpg");
 
-		// create VAOs
-		Poly = Graphics->CreateSimpleMeshShape(GeometricShapes::Cube, TextrueShader, { TConcrete });
-		Poly2 = Graphics->CreateSimpleMeshShape(GeometricShapes::Cube, TextrueShader, { TGrid });
+		// create the materials
+		MaterialPtr MConcrete = make_shared<Material>();
+		MaterialPtr MGrid = make_shared<Material>();
 
-		Poly->Transform.Location = Vector3(1.0f, 0.0f, -1.0f); 
-		Poly2->Transform.Location = Vector3(1.0f, 0.0f, 1.0f);
+		// assign the base colour of the materails using the textures
+		MConcrete->BaseColour = TConcrete;
+		MGrid->BaseColour = TGrid;
+
+		// create VAOs
+		Model = Graphics->CreateSimpleModelShape(GeometricShapes::Cube, TextrueShader);
+		Model2 = Graphics->CreateSimpleModelShape(GeometricShapes::Cube, TextrueShader);
+
+		Model->SetMaterialBySlot(0, MGrid);
+		Model2->SetMaterialBySlot(0, MConcrete);
+
+		Model->Transform.Location = Vector3(1.0f, 0.0f, -1.0f); 
+		Model2->Transform.Location = Vector3(1.0f, 0.0f, 1.0f);
 	}
 
 	// as long as the game is not over run the loop
@@ -101,13 +123,13 @@ void Game::Update()
 	LastFrameTime = CurrentFrameTime;
 
 	// TODO: Handle Update
-	Poly->Transform.Rotation.x += 50.0f * GetFDeltaTime();
-	Poly->Transform.Rotation.y += 50.0f * GetFDeltaTime();
-	Poly->Transform.Rotation.z += 50.0f * GetFDeltaTime();
+	Model->Transform.Rotation.x += 50.0f * GetFDeltaTime();
+	Model->Transform.Rotation.y += 50.0f * GetFDeltaTime();
+	Model->Transform.Rotation.z += 50.0f * GetFDeltaTime();
 
-	Poly2->Transform.Rotation.x += -50.0f * GetFDeltaTime();
-	Poly2->Transform.Rotation.y += -50.0f * GetFDeltaTime();
-	Poly2->Transform.Rotation.z += -50.0f * GetFDeltaTime();
+	Model2->Transform.Rotation.x += -50.0f * GetFDeltaTime();
+	Model2->Transform.Rotation.y += -50.0f * GetFDeltaTime();
+	Model2->Transform.Rotation.z += -50.0f * GetFDeltaTime();
 
 	Vector3 CameraInput = Vector3(0.0f);
 	CDirection CamDirections = Graphics->EngineDefaultCam->GetDirections();
@@ -136,15 +158,17 @@ void Game::Update()
 	if (GameInput->IsKeyPressed(SDL_SCANCODE_E)) {
 		CameraInput += -CamDirections.Up;
 	}
-
-	CameraInput *= 3.0f * GetFDeltaTime();
-
-	Vector3 NewLocation = Graphics->EngineDefaultCam->GetTransforms().Location += CameraInput;
-	Graphics->EngineDefaultCam->Translate(NewLocation);
+	
+	// move the camera based on input
+	Graphics->EngineDefaultCam->AddMovementInput(CameraInput);
 
 	if (GameInput->IsMouseButtonPressed(MouseButtons::RIGHT)) {
-		Graphics->EngineDefaultCam->RotatePitch(-GameInput->MouseYDelta * GetFDeltaTime() * 25.0f);
-		Graphics->EngineDefaultCam->RotateYaw(GameInput->MouseXDelta * GetFDeltaTime() * 25.0f);
+		Graphics->EngineDefaultCam->RotatePitch(-GameInput->MouseYDelta * GetFDeltaTime());
+		Graphics->EngineDefaultCam->RotateYaw(GameInput->MouseXDelta * GetFDeltaTime());
+		GameInput->ShowCursor(false);
+	}
+	else {
+		GameInput->ShowCursor(true);
 	}
 
 	/*

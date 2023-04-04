@@ -1,11 +1,12 @@
 #include "DBEngine/Graphics/GraphicsEngine.h"
 #include "GL/glew.h"
-#include "DBEngine/Graphics/Mesh.h"
+#include "DBEngine/Graphics/Model.h"
 #include "DBEngine/Graphics/ShaderProgram.h"
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 #include "DBEngine/Graphics/Texture.h"
 #include "DBEngine/Graphics/Camera.h"
+#include "DBEngine/Graphics/Material.h"
 
 GraphicsEngine::GraphicsEngine()
 {
@@ -18,8 +19,8 @@ GraphicsEngine::GraphicsEngine()
 
 GraphicsEngine::~GraphicsEngine()
 {
-	// clear the mesh stack
-	MeshStack.clear();
+	// clear the model stack
+	ModelStack.clear();
 
 	// clear the shader
 	Shader = nullptr;
@@ -99,6 +100,12 @@ bool GraphicsEngine::InitGE(const char* WTitle, bool bFullscreen, int WWidth, in
 	// enable 3D depth
 	glEnable(GL_DEPTH_TEST);
 
+	// create the default engine texture
+	DefaultEngineTexture = CreateTexture("Game/Textures/DefaultTexture.png");
+	// create the default engine material
+	// materials when created auto assigned the default texture
+	DefaultEngineMaterial = make_shared<Material>();
+
 	return true;
 }
 
@@ -123,9 +130,9 @@ void GraphicsEngine::Draw()
 
 	HandleWireframeMode(false);
 
-	// run through each mesh and call its draw method
-	for (MeshPtr LMesh : MeshStack) {
-		LMesh->Draw();
+	// run through each model and call its draw method
+	for (ModelPtr LModel : ModelStack) {
+		LModel->Draw();
 	}
 
 	PresentGraphics();
@@ -136,21 +143,21 @@ SDL_Window* GraphicsEngine::GetWindow() const
 	return SdlWindow;
 }
 
-MeshPtr GraphicsEngine::CreateSimpleMeshShape(GeometricShapes Shape, ShaderPtr MeshShader, TexturePtrStack MeshTextures)
+ModelPtr GraphicsEngine::CreateSimpleModelShape(GeometricShapes Shape, ShaderPtr MeshShader)
 {
-	// initialise a new mesh class
-	MeshPtr NewMesh = make_shared<Mesh>();
+	// initialise a new model class
+	ModelPtr NewModel = make_shared<Model>();
 
 	// make sure it worked
-	if (!NewMesh->CreateSimpleShape(Shape, MeshShader, MeshTextures)) {
+	if (!NewModel->CreateSimpleMesh(Shape, MeshShader)) {
 		return nullptr;
 	}
 
-	// add mesh into the stack of meshes to be renderer
-	MeshStack.push_back(NewMesh);
+	// add mesh into the stack of modelss to be renderer
+	ModelStack.push_back(NewModel);
 
-	// return the new mesh
-	return NewMesh;
+	// return the new model
+	return NewModel;
 }
 
 ShaderPtr GraphicsEngine::CreateShader(VFShaderParams ShaderFilePaths)

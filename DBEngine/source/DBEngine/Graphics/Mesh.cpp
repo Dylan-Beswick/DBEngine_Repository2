@@ -1,6 +1,6 @@
 #include "DBEngine/Graphics/Mesh.h"
 #include "DBEngine/Graphics/ShaderProgram.h"
-#include "DBEngine/Graphics/Texture.h"
+#include "DBEngine/Graphics/Material.h"
 #include "DBEngine/Graphics/VertexArrayObject.h"
 #include "glm/gtc/matrix_transform.hpp"
 #include "DBEngine/Game.h"
@@ -14,13 +14,12 @@ Mesh::Mesh()
 Mesh::~Mesh()
 {
 	MeshShader = nullptr;
-	MeshTextures.clear();
 	MeshVAO = nullptr;
 
 	cout << "Mesh | Mesh destroyed." << endl;
 }
 
-bool Mesh::CreateSimpleShape(GeometricShapes Shape, ShaderPtr MeshShader, TexturePtrStack MeshTextures)
+bool Mesh::CreateSimpleShape(GeometricShapes Shape, ShaderPtr MeshShader, unInt MaterialSlot)
 {
 	cout << "Creating mesh." << endl;
 
@@ -35,26 +34,22 @@ bool Mesh::CreateSimpleShape(GeometricShapes Shape, ShaderPtr MeshShader, Textur
 
 	// assign the shader and textures
 	this->MeshShader = MeshShader;
-	this->MeshTextures = MeshTextures;
+	this->MaterialSlot = MaterialSlot;
 
 	cout << "Mesh | Mesh created successfully." << endl;
 
 	return true;
 }
 
-void Mesh::Draw()
+void Mesh::Draw(MaterialPtr MeshMaterial)
 {
 	// Activate the shader that this mesh uses
 	MeshShader->RunShader();
 
-	// Activate the required textures for this mesh
-	for (unInt Index = 0; Index < MeshTextures.size(); Index++) {
-		// Activating the texture through openGl
-		MeshTextures[Index]->ActivateTexture(Index);
-		// setting the texture's number as the active texture in the shader
-		MeshShader->SetInt("TextureColour", Index);
-		// Binding the texture to the shader
-		MeshTextures[Index]->BindTexture();
+	// run the material for this mesh
+	// activate all required textures in the material
+	if (MeshMaterial != nullptr) {
+		MeshMaterial->Draw(MeshShader);
 	}
 
 	// initialise a static variable to check if any changes to transform

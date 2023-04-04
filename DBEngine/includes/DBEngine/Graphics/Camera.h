@@ -3,7 +3,7 @@
 
 struct STCameraData {
 	// how fast the camrea can move
-	float Speed = 25.0f;
+	float Speed = 5.0f;
 
 	// basically the zoom
 	// how much of the view space the camera can see - in degrees
@@ -14,6 +14,9 @@ struct STCameraData {
 	float NearClip = 0.01f;
 	// opposide of near clip
 	float FarClip = 1000.0f;
+
+	// the speed at which the camera turn is multiplied
+	float LookSensitivity = 25.0f;
 };
 
 class Camera {
@@ -22,6 +25,8 @@ public:
 
 	// move camera in 3D space to a location
 	void Translate(Vector3 Location);
+
+	void AddMovementInput(Vector3 Direction);
 
 	// retun the transform
 	CTransform GetTransforms() const { return Transform; }

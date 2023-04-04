@@ -27,6 +27,12 @@ public:
 	// set the bIsGameOver to true
 	void CloseApp() { bIsGameOver = true; }
 
+	// return the graphics engine default texture
+	TexturePtr GetDefaultEngineTexture();
+
+	// return the graphics engine default material
+	MaterialPtr GetDefaultEngineMaterial();
+
 private:
 	Game();
 	~Game();
@@ -61,6 +67,6 @@ private:
 	Input* GameInput;
 
 	// Temporary mesh variables
-	MeshPtr Poly2;
-	MeshPtr Poly;
+	ModelPtr Model2;
+	ModelPtr Model;
 };

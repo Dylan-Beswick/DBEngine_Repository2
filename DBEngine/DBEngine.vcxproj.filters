@@ -48,6 +48,15 @@
     <ClInclude Include="includes\DBEngine\Graphics\Camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="includes\DBEngine\Graphics\Material.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\DBEngine\Graphics\Vertex.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\DBEngine\Graphics\Model.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\stb_image\stb_image.cpp">
@@ -78,6 +87,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="source\DBEngine\Graphics\Camera.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\DBEngine\Graphics\Material.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\DBEngine\Graphics\Model.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
