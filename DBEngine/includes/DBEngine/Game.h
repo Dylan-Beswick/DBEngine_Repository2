@@ -69,4 +69,7 @@ private:
 	// Temporary mesh variables
 	ModelPtr Model2;
 	ModelPtr Model;
+
+	ModelPtr Wall;
+	ModelPtr Wall2;
 };

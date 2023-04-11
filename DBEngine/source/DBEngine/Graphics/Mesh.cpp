@@ -41,6 +41,28 @@ bool Mesh::CreateSimpleShape(GeometricShapes Shape, ShaderPtr MeshShader, unInt 
 	return true;
 }
 
+bool Mesh::CreateMesh(vector<Vertex> Vertices, vector<unInt> Indices, ShaderPtr MeshShader, unInt MaterialSlot)
+{
+	cout << "Creating mesh." << endl;
+
+	// Create the VAO
+	MeshVAO = make_shared<VAO>(Vertices, Indices);
+
+	// validate the mesh was created
+	if (MeshVAO == nullptr) {
+		cout << "Mesh | Mesh failed to be created." << endl;
+		return false;
+	}
+
+	// assign the shader and textures
+	this->MeshShader = MeshShader;
+	this->MaterialSlot = MaterialSlot;
+
+	cout << "Mesh | Mesh created successfully." << endl;
+
+	return true;
+}
+
 void Mesh::Draw(MaterialPtr MeshMaterial)
 {
 	// Activate the shader that this mesh uses

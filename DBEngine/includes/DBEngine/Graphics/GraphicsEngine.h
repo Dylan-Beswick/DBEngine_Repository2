@@ -26,6 +26,9 @@ public:
 	// create a new mesh with a material assigned
 	ModelPtr CreateSimpleModelShape(GeometricShapes Shape, ShaderPtr MeshShader);
 
+	// import a 3D model based on a file path
+	ModelPtr ImportModel(const char* FilePath, ShaderPtr Shader);
+
 	// add a new shader
 	// @param 1 - Vertex Shader
 	// @param 2 - Fragment Shader

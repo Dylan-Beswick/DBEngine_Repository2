@@ -83,11 +83,37 @@ void Game::Run()
 		Model = Graphics->CreateSimpleModelShape(GeometricShapes::Cube, TextrueShader);
 		Model2 = Graphics->CreateSimpleModelShape(GeometricShapes::Cube, TextrueShader);
 
+		// set materials of the models
 		Model->SetMaterialBySlot(0, MGrid);
 		Model2->SetMaterialBySlot(0, MConcrete);
 
+		// transforming the models location
 		Model->Transform.Location = Vector3(1.0f, 0.0f, -1.0f); 
 		Model2->Transform.Location = Vector3(1.0f, 0.0f, 1.0f);
+
+		// import custom meshes
+		Wall = Graphics->ImportModel("Game/Models/damaged-wall/source/SM_WallDamaged.obj", TextrueShader);
+		Wall2 = Graphics->ImportModel("Game/Models/damaged-wall/source/SM_WallDamaged.obj", TextrueShader);
+
+		// transform the wall
+		Wall->Transform.Scale = Vector3(0.05f);
+		Wall->Transform.Rotation.y = 90.0f;
+		Wall->Transform.Location = Vector3(2.0f, -2.0f, 0.0f);
+
+		Wall2->Transform.Scale = Vector3(0.05f);
+		Wall2->Transform.Rotation.y = 90.0f;
+		Wall2->Transform.Location = Vector3(5.0f, -2.0f, 0.0f);
+
+		// create the texture
+		TexturePtr TWall = Graphics->CreateTexture("Game/Models/damaged-wall/textures/T_Wall_Damaged_BC.png");
+
+		// create a material
+		MaterialPtr MWall = make_shared<Material>();
+		MWall->BaseColour = TWall;
+
+		// apply the material
+		Wall->SetMaterialBySlot(1, MWall);
+		Wall2->SetMaterialBySlot(1, MWall);
 	}
 
 	// as long as the game is not over run the loop

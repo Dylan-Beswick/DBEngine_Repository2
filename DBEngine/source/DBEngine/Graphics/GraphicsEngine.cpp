@@ -160,6 +160,22 @@ ModelPtr GraphicsEngine::CreateSimpleModelShape(GeometricShapes Shape, ShaderPtr
 	return NewModel;
 }
 
+ModelPtr GraphicsEngine::ImportModel(const char* FilePath, ShaderPtr Shader)
+{
+	// initialise an empty model
+	ModelPtr NewModel = make_shared<Model>();
+	
+	// import the model from the file path
+	if (!NewModel->ImportMeshFromFile(FilePath, Shader)) {
+		return nullptr;
+	}
+
+	// add to the model stack
+	ModelStack.push_back(NewModel);
+
+	return NewModel;
+}
+
 ShaderPtr GraphicsEngine::CreateShader(VFShaderParams ShaderFilePaths)
 {
 	// create a new shader class

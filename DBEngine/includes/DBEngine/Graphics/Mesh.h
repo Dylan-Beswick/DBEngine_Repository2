@@ -2,6 +2,8 @@
 #include "DBEngine/CoreMinimal.h"
 #include "DBEngine/Math/Transformations.h"
 
+struct Vertex;
+
 class Mesh {
 public:
 	Mesh();
@@ -9,6 +11,9 @@ public:
 
 	// Create the mesh out of VAO, a Shader, and Textures
 	bool CreateSimpleShape(GeometricShapes Shape, ShaderPtr MeshShader, unInt MaterialSlot);
+
+	// Create a mesh VAO that has a predefined model
+	bool CreateMesh(vector<Vertex> Vertices, vector<unInt> Indices, ShaderPtr MeshShader, unInt MaterialSlot);
 
 	// handle the drawing of all the required classes
 	void Draw(MaterialPtr MeshMaterial);
