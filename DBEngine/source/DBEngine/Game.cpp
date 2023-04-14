@@ -76,12 +76,12 @@ void Game::Run()
 		MaterialPtr MGrid = make_shared<Material>();
 
 		// assign the base colour of the materails using the textures
-		MConcrete->BaseColour = TConcrete;
-		MGrid->BaseColour = TGrid;
+		MConcrete->BaseColour.V3Texture = TConcrete;
+		MGrid->BaseColour.V3Texture = TGrid;
 
 		// create VAOs
-		Model = Graphics->CreateSimpleModelShape(GeometricShapes::Cube, TextrueShader);
-		Model2 = Graphics->CreateSimpleModelShape(GeometricShapes::Cube, TextrueShader);
+		Model = Graphics->ImportModel("Game/Models/Primitives/Cube.fbx", TextrueShader);
+		Model2 = Graphics->ImportModel("Game/Models/Primitives/Sphere.fbx", TextrueShader);
 
 		// set materials of the models
 		Model->SetMaterialBySlot(0, MGrid);
@@ -90,7 +90,7 @@ void Game::Run()
 		// transforming the models location
 		Model->Transform.Location = Vector3(1.0f, 0.0f, -1.0f); 
 		Model2->Transform.Location = Vector3(1.0f, 0.0f, 1.0f);
-
+		/*
 		// import custom meshes
 		Wall = Graphics->ImportModel("Game/Models/damaged-wall/source/SM_WallDamaged.obj", TextrueShader);
 		Wall2 = Graphics->ImportModel("Game/Models/damaged-wall/source/SM_WallDamaged.obj", TextrueShader);
@@ -109,11 +109,11 @@ void Game::Run()
 
 		// create a material
 		MaterialPtr MWall = make_shared<Material>();
-		MWall->BaseColour = TWall;
+		MWall->BaseColour.V3Texture = TWall;
 
 		// apply the material
 		Wall->SetMaterialBySlot(1, MWall);
-		Wall2->SetMaterialBySlot(1, MWall);
+		Wall2->SetMaterialBySlot(1, MWall);*/
 	}
 
 	// as long as the game is not over run the loop

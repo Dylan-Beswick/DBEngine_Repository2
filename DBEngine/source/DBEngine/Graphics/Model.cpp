@@ -74,7 +74,7 @@ bool Model::ImportMeshFromFile(const char* ImportFilePath, ShaderPtr ModelShader
 		MaterialStack[i] = Game::GetGameInstance().GetDefaultEngineMaterial();
 	}
 
-	return false;
+	return true;
 }
 
 void Model::Draw()

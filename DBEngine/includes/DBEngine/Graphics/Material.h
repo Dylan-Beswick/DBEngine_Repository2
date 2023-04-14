@@ -1,5 +1,11 @@
 #pragma once
 #include "DBEngine/CoreMinimal.h"
+#include "DBEngine/Math/Transformations.h"
+
+struct Vec3Texture {
+	TexturePtr V3Texture;
+	Vector3 V3Multiplier = Vector3(1.0f);
+};
 
 class Material {
 public:
@@ -8,5 +14,10 @@ public:
 
 	void Draw(ShaderPtr Shader);
 
-	TexturePtr BaseColour;
+	// store the colour map and multiplier of each value
+	Vec3Texture BaseColour;
+	Vec3Texture SpecularColour;
+	Vec3Texture EmissiveColour;
+
+	float Shininess;
 };

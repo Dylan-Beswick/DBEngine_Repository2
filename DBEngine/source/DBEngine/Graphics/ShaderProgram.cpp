@@ -59,7 +59,23 @@ void ShaderProgram::SetMat4(const char* ShaderVariable, glm::mat4 Value)
 void ShaderProgram::SetInt(const char* ShaderVarName, int Value)
 {
 	// find the uniform int value with the ShaderVarName and assign it the value
-	glUniform1i(glGetUniformLocation(ProgramID, ShaderVarName), Value);
+	glUniform1i(
+		glGetUniformLocation(ProgramID, ShaderVarName), Value
+	);
+}
+
+void ShaderProgram::SetFloat(const char* ShaderVarName, float Value)
+{
+	glUniform1f(
+		glGetUniformLocation(ProgramID, ShaderVarName), Value
+	);
+}
+
+void ShaderProgram::SetVector3(const char* ShaderVarName, glm::vec3 Value)
+{
+	glUniform3fv(
+		glGetUniformLocation(ProgramID, ShaderVarName), 1, value_ptr(Value)
+	);
 }
 
 bool ShaderProgram::AttachShader(const wchar_t* ShaderFilePath, ShaderTypes Type)
