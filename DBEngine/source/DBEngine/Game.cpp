@@ -68,28 +68,34 @@ void Game::Run()
 			L"Game/Shaders/TextureShader/TextureShader.sfrag"
 			});
 
-		TexturePtr TConcrete = Graphics->CreateTexture("Game/Textures/ConcreteFloor.jpg");
 		TexturePtr TGrid = Graphics->CreateTexture("Game/Textures/ColourGrid.jpg");
+		TexturePtr TConcrete = Graphics->CreateTexture("Game/Textures/ConcreteFloor.jpg");
+		TexturePtr TCobble = Graphics->CreateTexture("Game/Textures/Cobblestone.jpg");
 
 		// create the materials
-		MaterialPtr MConcrete = make_shared<Material>();
 		MaterialPtr MGrid = make_shared<Material>();
+		MaterialPtr MConcrete = make_shared<Material>();
+		MaterialPtr MCobble = make_shared<Material>();
 
 		// assign the base colour of the materails using the textures
-		MConcrete->BaseColour.V3Texture = TConcrete;
 		MGrid->BaseColour.V3Texture = TGrid;
+		MConcrete->BaseColour.V3Texture = TConcrete;
+		MCobble->BaseColour.V3Texture = TCobble;
 
 		// create VAOs
 		Model = Graphics->ImportModel("Game/Models/Primitives/Cube.fbx", TextrueShader);
 		Model2 = Graphics->ImportModel("Game/Models/Primitives/Sphere.fbx", TextrueShader);
+		Model3 = Graphics->ImportModel("Game/Models/Primitives/Plane.fbx", TextrueShader);
 
 		// set materials of the models
 		Model->SetMaterialBySlot(0, MGrid);
 		Model2->SetMaterialBySlot(0, MConcrete);
+		Model3->SetMaterialBySlot(0, MCobble);
 
 		// transforming the models location
-		Model->Transform.Location = Vector3(1.0f, 0.0f, -1.0f); 
-		Model2->Transform.Location = Vector3(1.0f, 0.0f, 1.0f);
+		Model->Transform.Location = Vector3(1.0f, 0.0f, -2.0f); 
+		Model2->Transform.Location = Vector3(1.0f, 0.0f, 0.0f);
+		Model3->Transform.Location = Vector3(1.0f, 0.0f, 2.0f);
 		/*
 		// import custom meshes
 		Wall = Graphics->ImportModel("Game/Models/damaged-wall/source/SM_WallDamaged.obj", TextrueShader);
@@ -156,6 +162,10 @@ void Game::Update()
 	Model2->Transform.Rotation.x += -50.0f * GetFDeltaTime();
 	Model2->Transform.Rotation.y += -50.0f * GetFDeltaTime();
 	Model2->Transform.Rotation.z += -50.0f * GetFDeltaTime();
+
+	Model3->Transform.Rotation.x += -50.0f * GetFDeltaTime();
+	Model3->Transform.Rotation.y += -50.0f * GetFDeltaTime();
+	Model3->Transform.Rotation.z += -50.0f * GetFDeltaTime();
 
 	Vector3 CameraInput = Vector3(0.0f);
 	CDirection CamDirections = Graphics->EngineDefaultCam->GetDirections();

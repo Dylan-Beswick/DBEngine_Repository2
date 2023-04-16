@@ -68,19 +68,26 @@ void main() {
 	vec3 ViewDir = normalize(CamPosition - VPosition);
 	
 	// create a custom directional light
-	DirLights[0].Colour = vec3(1.0f);
+	DirLights[0].Colour = vec3(1.0f, 0.0f, 0.0f);
 	DirLights[0].Direction = vec3(0.0f, -1.0f, 0.0f);
-	DirLights[0].AmbientLight = vec3(0.1f);
+	DirLights[0].AmbientLight = vec3(0.01f);
 
 	// create a custom point light
-	PointLights[0].Colour = vec3(1.0f);
-	PointLights[0].Position = vec3(0.0f);
-	PointLights[0].Attenuation = 10.0f;
+	PointLights[0].Colour = vec3(0.0f, 1.0f, 0.0f);
+	PointLights[0].Position = vec3(-2.0f, 5.0f, -2.0f);
+	PointLights[0].Attenuation = 0.0f;
 
-	vec3 result = CalculatePointLight(SMat, ViewDir, PointLights[0]);
+	PointLights[1].Colour = vec3(0.0f, 0.0f, 1.0f);
+	PointLights[1].Position = vec3(2.0f, -5.0f, 2.0f);
+	PointLights[1].Attenuation = 0.01f;
+
+	//vec3 results = CalculateDirLight(SMat, ViewDir, DirLights[0]);
+	vec3 results = CalculatePointLight(SMat, ViewDir, PointLights[1]);
 
 	// texture() accepts colour and coordinates to create an open gl texture
-	OutColour = vec4(result, 1.0f);
+	OutColour = vec4(results, 1.0f);
+	/*IDK how to add multiples*/
+
 }
 
 vec3 CalculateDirLight(ShaderMaterial SMat, vec3 ViewDir, DirLight Light) {
