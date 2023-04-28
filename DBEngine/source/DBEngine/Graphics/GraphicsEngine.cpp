@@ -7,6 +7,7 @@
 #include "DBEngine/Graphics/Texture.h"
 #include "DBEngine/Graphics/Camera.h"
 #include "DBEngine/Graphics/Material.h"
+#include "DBEngine/Collisions/Collision.h"
 
 GraphicsEngine::GraphicsEngine()
 {
@@ -126,16 +127,12 @@ void GraphicsEngine::ClearGraphics()
 
 void GraphicsEngine::Draw()
 {
-	ClearGraphics();
-
 	HandleWireframeMode(false);
 
 	// run through each model and call its draw method
 	for (ModelPtr LModel : ModelStack) {
 		LModel->Draw();
 	}
-
-	PresentGraphics();
 }
 
 SDL_Window* GraphicsEngine::GetWindow() const
@@ -248,6 +245,22 @@ void GraphicsEngine::ApplyScreenTransformation(ShaderPtr Shader)
 
 	Shader->SetMat4("view", view);
 	Shader->SetMat4("projection", projection);
+}
+
+void GraphicsEngine::RemoveModel(ModelPtr ModelToRemove)
+{
+	// looking for the model in the model stack vector array
+	// we look through the whole vector and if we find the value them we assign the correct index
+	// this will equal .end() if it doesn't exist in the stack
+	ModelPtrStack::iterator ModelIt = find(ModelStack.begin(), ModelStack.end(), ModelToRemove);
+
+	// if it's not in the array then stop the function
+	if (ModelIt == ModelStack.end()) {
+		return;
+	}
+
+	// use the iterator/index to erase the object
+	ModelStack.erase(ModelIt);
 }
 
 void GraphicsEngine::HandleWireframeMode(bool bShowWireframeMode)

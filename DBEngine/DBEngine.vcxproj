@@ -133,6 +133,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="includes\DBEngine\Collisions\Collision.h" />
     <ClInclude Include="includes\DBEngine\CoreMinimal.h" />
     <ClInclude Include="includes\DBEngine\Game.h" />
     <ClInclude Include="includes\DBEngine\Graphics\Camera.h" />
@@ -150,6 +151,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game\Source.cpp" />
+    <ClCompile Include="source\DBEngine\Collisions\Collision.cpp" />
     <ClCompile Include="source\DBEngine\Game.cpp" />
     <ClCompile Include="source\DBEngine\Graphics\Camera.cpp" />
     <ClCompile Include="source\DBEngine\Graphics\GraphicsEngine.cpp" />
@@ -167,6 +169,8 @@
     <None Include="Game\Shaders\TextureShader\TextureShader.svert" />
     <None Include="Game\Shaders\VertexShader\VertexShader.sfrag" />
     <None Include="Game\Shaders\VertexShader\VertexShader.svert" />
+    <None Include="Game\Shaders\WireframeShader\WireframeShader.sfrag" />
+    <None Include="Game\Shaders\WireframeShader\WireframeShader.svert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

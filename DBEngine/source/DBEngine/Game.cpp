@@ -4,6 +4,7 @@
 #include "DBEngine/Input.h"
 #include "DBEngine/Graphics/Camera.h"
 #include "DBEngine/Graphics/Material.h"
+#include "DBEngine/Collisions/Collision.h"
 
 Game& Game::GetGameInstance()
 {
@@ -37,6 +38,15 @@ TexturePtr Game::GetDefaultEngineTexture()
 MaterialPtr Game::GetDefaultEngineMaterial()
 {
 	return Graphics->DefaultEngineMaterial;
+}
+
+void Game::RemoveModelFromGame(ModelPtr& ModelToRemove)
+{
+	// remove from the graphics engine
+	Graphics->RemoveModel(ModelToRemove);
+	
+	// change the reference to nullptr and remove from the game
+	ModelToRemove = nullptr;
 }
 
 Game::Game()
@@ -82,6 +92,9 @@ void Game::Run()
 		// create VAOs
 		Model = Graphics->ImportModel("Game/Models/Primitives/Cube.fbx", TextrueShader);
 		Model2 = Graphics->ImportModel("Game/Models/Primitives/Sphere.fbx", TextrueShader);
+
+		Model->AddCollisionToModel(Vector3(1.25f));
+		Model2->AddCollisionToModel(Vector3(2.0f));
 
 		// set materials of the models
 		Model->SetMaterialBySlot(0, MGrid);
@@ -133,29 +146,6 @@ void Game::ProcessInput()
 {
 	// run the input detection for our game input
 	GameInput->ProcessInput();
-}
-
-void Game::Update()
-{
-	// Set delta time first always
-	static double LastFrameTime = 0.0;
-	// set current time since the game has passed
-	double CurrentFrameTime = static_cast<double>(SDL_GetTicks64());
-	// find the time difference between Last and Current frame
-	double NewDeltaTime = CurrentFrameTime - LastFrameTime;
-	// set delta time as seconds
-	DeltaTime = NewDeltaTime / 1000.0;
-	// update the last frame time for the next iteration
-	LastFrameTime = CurrentFrameTime;
-
-	// TODO: Handle Update
-	Model->Transform.Rotation.x += 50.0f * GetFDeltaTime();
-	Model->Transform.Rotation.y += 50.0f * GetFDeltaTime();
-	Model->Transform.Rotation.z += 50.0f * GetFDeltaTime();
-
-	Model2->Transform.Rotation.x += -50.0f * GetFDeltaTime();
-	Model2->Transform.Rotation.y += -50.0f * GetFDeltaTime();
-	Model2->Transform.Rotation.z += -50.0f * GetFDeltaTime();
 
 	Vector3 CameraInput = Vector3(0.0f);
 	CDirection CamDirections = Graphics->EngineDefaultCam->GetDirections();
@@ -189,12 +179,51 @@ void Game::Update()
 	Graphics->EngineDefaultCam->AddMovementInput(CameraInput);
 
 	if (GameInput->IsMouseButtonPressed(MouseButtons::RIGHT)) {
-		Graphics->EngineDefaultCam->RotatePitch(-GameInput->MouseYDelta * GetFDeltaTime());
-		Graphics->EngineDefaultCam->RotateYaw(GameInput->MouseXDelta * GetFDeltaTime());
+		Graphics->EngineDefaultCam->RotatePitch(-GameInput->MouseYDelta);
+		Graphics->EngineDefaultCam->RotateYaw(GameInput->MouseXDelta);
 		GameInput->ShowCursor(false);
 	}
 	else {
 		GameInput->ShowCursor(true);
+	}
+}
+
+void Game::Update()
+{
+	// Set delta time first always
+	static double LastFrameTime = 0.0;
+	// set current time since the game has passed
+	double CurrentFrameTime = static_cast<double>(SDL_GetTicks64());
+	// find the time difference between Last and Current frame
+	double NewDeltaTime = CurrentFrameTime - LastFrameTime;
+	// set delta time as seconds
+	DeltaTime = NewDeltaTime / 1000.0;
+	// update the last frame time for the next iteration
+	LastFrameTime = CurrentFrameTime;
+
+	// TODO: Handle Update
+	// Model2->Transform.Location.z += -0.1f * GetFDeltaTime();
+
+	if (Model != nullptr) {
+		Model->Transform.Rotation.x += 50.0f * GetFDeltaTime();
+		Model->Transform.Rotation.y += 50.0f * GetFDeltaTime();
+		Model->Transform.Rotation.z += 50.0f * GetFDeltaTime();
+	}
+
+	if (Model2 != nullptr) {
+		Model2->Transform.Rotation.x += -50.0f * GetFDeltaTime();
+		Model2->Transform.Rotation.y += -50.0f * GetFDeltaTime();
+		Model2->Transform.Rotation.z += -50.0f * GetFDeltaTime();
+	}
+
+	Graphics->EngineDefaultCam->Update();
+
+	// do collision stuff
+	CollisionPtr CamCol = Graphics->EngineDefaultCam->GetCameraCollision();
+
+	// if we run into the wall remove it from the game
+	if (Model2 != nullptr && CamCol->IsOverlapping(*Model2->GetCollision())) {
+		RemoveModelFromGame(Model2);
 	}
 
 	/*
@@ -207,8 +236,12 @@ void Game::Update()
 
 void Game::Draw()
 {
+	Graphics->ClearGraphics();
+
 	// TODO: Draw graphics to the screen
 	Graphics->Draw();
+
+	Graphics->PresentGraphics();
 }
 
 void Game::CloseGame()

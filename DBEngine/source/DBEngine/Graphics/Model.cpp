@@ -2,6 +2,7 @@
 #include "DBEngine/Graphics/Mesh.h"
 #include "DBEngine/Game.h"
 #include "DBEngine/Graphics/Vertex.h"
+#include "DBEngine/Collisions/Collision.h"
 // ASSIMP HEADERS
 #include "assimp/Importer.hpp"
 #include "assimp/scene.h"
@@ -10,6 +11,7 @@
 Model::Model()
 {
 	ModelFilePath = "";
+	ModelCollision = nullptr;
 }
 
 Model::~Model()
@@ -79,6 +81,11 @@ bool Model::ImportMeshFromFile(const char* ImportFilePath, ShaderPtr ModelShader
 
 void Model::Draw()
 {
+	if (ModelCollision != nullptr) {
+		//ModelCollision->DebugDraw(Vector3(255.0f));
+		ModelCollision->SetLocation(Transform.Location);
+	}
+
 	// cycle through the meshes and draw each one
 	for (MeshPtr LMesh : MeshStack) {
 		// assign the model transformations to the mesh
@@ -110,6 +117,13 @@ MaterialPtr Model::GetMaterialBySlot(unInt SlotIndex) const
 	}
 
 	return MaterialStack[SlotIndex];
+}
+
+CollisionPtr Model::AddCollisionToModel(Vector3 Dimensions, Vector3 Offset)
+{
+	ModelCollision = make_shared<BoxCollision>(Transform.Location, Offset, Dimensions);
+
+	return ModelCollision;
 }
 
 void Model::FindAndImportSceneMeshes(aiNode* Node, const aiScene* Scene)
