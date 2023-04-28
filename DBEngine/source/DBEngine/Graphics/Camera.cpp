@@ -1,6 +1,7 @@
 #include "DBEngine/Graphics/Camera.h"
 #include "glm/gtc/matrix_transform.hpp"
 #include "DBEngine/Game.h"
+#include "DBEngine/Collisions/Collision.h"
 
 Camera::Camera()
 {

@@ -79,7 +79,7 @@ void main() {
 
 	vec3 result = CalculatePointLight(SMat, ViewDir, PointLights[0]);
 
-	result += CalculateDirLight(Smat, ViewDir, DirLights[0])
+	result += CalculateDirLight(SMat, ViewDir, DirLights[0]);
 
 	// texture() accepts colour and coordinates to create an open gl texture
 	OutColour = vec4(result, 1.0f);
