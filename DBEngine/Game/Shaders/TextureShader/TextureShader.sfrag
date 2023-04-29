@@ -69,13 +69,13 @@ void main() {
 	
 	// create a custom directional light
 	DirLights[0].Colour = vec3(1.0f);
-	DirLights[0].Direction = vec3(0.0f, -1.0f, 0.0f);
-	DirLights[0].AmbientLight = vec3(0.1f);
+	DirLights[0].Direction = vec3(0.0f, 3.0f, 0.0f);
+	DirLights[0].AmbientLight = vec3(0.5f);
 
 	// create a custom point light
-	PointLights[0].Colour = vec3(1.0f);
-	PointLights[0].Position = vec3(0.0f);
-	PointLights[0].Attenuation = 10.0f;
+	PointLights[0].Colour = vec3(1.0f, 0.0f, 1.0f);
+	PointLights[0].Position = vec3(-7.5f, 0.0f, 0.0f);
+	PointLights[0].Attenuation = 0.01f; //this doesn't actually change anything; 10.0f == 1.0f == 0.1f == -1.0f
 
 	vec3 result = CalculatePointLight(SMat, ViewDir, PointLights[0]);
 
