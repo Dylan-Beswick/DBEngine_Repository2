@@ -1,6 +1,4 @@
-﻿  Game.cpp
-C:\Users\boobe\OneDrive\Desktop\School\Advanced Game Engine Programming\DBEngine_Repository2\DBEngine\source\DBEngine\Game.cpp(602,43): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\Users\boobe\OneDrive\Desktop\School\Advanced Game Engine Programming\DBEngine_Repository2\DBEngine\source\DBEngine\Game.cpp(603,50): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+﻿  Camera.cpp
   DBEngine.vcxproj -> C:\Users\boobe\OneDrive\Desktop\School\Advanced Game Engine Programming\DBEngine_Repository2\x64\Debug\DBEngine.exe
   C:\Users\boobe\OneDrive\Desktop\School\Advanced Game Engine Programming\DBEngine_Repository2\DBEngine\lib\assimp-vc143-mtd.dll
   C:\Users\boobe\OneDrive\Desktop\School\Advanced Game Engine Programming\DBEngine_Repository2\DBEngine\lib\glew32.dll
